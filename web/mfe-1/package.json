@@ -1,0 +1,19 @@
+{
+  "name": "@aryzing/mfe-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Eduard Bardají Puig <ebardaji@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "yarn run prod:emit:js",
+    "prod:test": "jest",
+    "prod:type-check": "tsc",
+    "prod:lint": "eslint src --ext .ts,.tsx --max-warnings 0 --cache",
+    "prod:emit:js": "webpack --config ../../config/webpack.config.prod.js",
+    "dev:test": "jest --watch",
+    "dev:type-check": "tsc --watch",
+    "dev:lint": "esw src --ext .ts,.tsx --max-warnings 0 --cache --color -w",
+    "dev:emit:js": "webpack --config ../../config/webpack.config.dev.js"
+  }
+}

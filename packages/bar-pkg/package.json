@@ -1,0 +1,27 @@
+{
+  "name": "@aryzing/bar-pkg",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "author": "Eduard Bardají Puig <ebardaji@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn run prod:emit:types & yarn run prod:emit:js",
+    "prod:test": "jest",
+    "prod:type-check": "tsc",
+    "prod:lint": "eslint src --ext .ts,.tsx --max-warnings 0 --cache",
+    "prod:emit:types": "tsc -p tsconfig.build.json",
+    "prod:emit:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline --ignore \"src/**/*.test.ts\" --root-mode upward",
+    "dev:test": "jest --watch",
+    "dev:type-check": "tsc --watch",
+    "dev:lint": "esw src --ext .ts,.tsx --max-warnings 0 --cache --color -w",
+    "dev:emit:types": "tsc -p tsconfig.build.json --watch",
+    "dev:emit:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline --ignore \"src/**/*.test.ts\" --root-mode upward --watch"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "lodash": "^4.17.15"
+  }
+}

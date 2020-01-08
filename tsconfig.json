@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "files": [],
+  "references": [
+    {"path": "packages/bar-pkg"},
+    {"path": "packages/foo-pkg"},
+    {"path": "web/mfe-1"},
+    {"path": "web/mfe-2"},
+  ],
+}

@@ -1,0 +1,49 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "web/*"
+  ],
+  "scripts": {
+    "postinstall": "echo TODO package build order",
+    "clean": "yarn clean:node_modules && yarn clean:dist",
+    "clean:node_modules": "find . -name 'node_modules' -type d -prune -print -exec rm -rf '{}' \\;",
+    "clean:dist": "find . -name 'dist' -type d -prune -print -exec rm -rf '{}' \\;",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/preset-typescript": "^7.3.2",
+    "@types/jest": "^24.0.25",
+    "@types/lodash": "^4.14.149",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "concurrently": "^5.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-watch": "^6.0.1",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.3.3",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "@aryzing/bar-pkg": "1.0.0",
+    "@aryzing/foo-pkg": "1.0.0",
+    "lodash": "^4.17.15"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}

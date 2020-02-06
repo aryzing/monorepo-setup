@@ -8,7 +8,7 @@
   "author": "Eduard Bardají Puig <ebardaji@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn run prod:emit:types & yarn run prod:emit:js",
+    "build": "yarn run prod:emit:types && yarn run prod:emit:js",
     "prod:test": "jest",
     "prod:type-check": "tsc",
     "prod:lint": "eslint src --ext .ts,.tsx --max-warnings 0 --cache",

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "declaration": true,                      /* Generates corresponding '.d.ts' file. */
+    "declaration": true,
     "emitDeclarationOnly": true,
     "declarationMap": true,
     "rootDir": "src",
@@ -19,6 +19,3 @@
     "**/*test.tsx",
   ]
 }
-
-
-// why, b/c tsc does not allow to confgure top level props

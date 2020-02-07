@@ -39,9 +39,11 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@aryzing/bar-pkg": "1.0.0",
-    "@aryzing/foo-pkg": "1.0.0",
-    "lodash": "^4.17.15"
+    "@aryzing/p1": "1.0.0",
+    "@aryzing/p2": "1.0.0",
+    "core-js": "^3.6.4",
+    "lodash": "^4.17.15",
+    "regenerator-runtime": "^0.13.3"
   },
   "browserslist": [
     "defaults"

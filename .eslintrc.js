@@ -46,12 +46,7 @@ module.exports = {
     // "globals": {},
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "project": ['./packages/**/tsconfig.json', './web/**/tsconfig.json'],
-        // Need to point two dirs up b/c yarn cd's into dir when running commands
-        "tsconfigRootDir": "../.."
+        "project": ['packages/**/tsconfig.json', 'web/**/tsconfig.json', 'tsconfig.json'],
     },
     "plugins": [
         "@typescript-eslint",

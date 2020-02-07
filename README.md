@@ -1,9 +1,24 @@
 # Everything I can think about, file by file
 
+* `.eslintignore` ignore emitted files in `dist` directories.
 * `.eslintrc.js`
-    * `env.browser` TODO -- we run code in browser, and therefore need the syntax and globals supported by browsers
-    * `env.es6` TODO
-    * `env.node` We're using node globals in our web code b/c we're bundling it (`process.env.NODE_ENV`) and some of the tools we use, like babel and jest, have config scripts which run on Node. Ideally we could fine-tune the env settings based on file extension or location (eg. most files in `config` are meant to be run in Node), although it's hard to justify the tradeoff of the additional effort.
+  * `env` No need to specify env (env only used to inform ESLint of sets of globals) b/c the typescript plugin disables `no-unused-vars`, as technically we're using the type system to determine which globals exist.
+  * `extends` Extends several eslint configs relevant to this project's tech stack. No effort is made to modify the recommneded settings in accordance with this project's [philosophy](#Philosophy).
+    * `eslint:recommended` ESLint's recommneded settings
+    * `plugin:@typescript-eslint/eslint-recommended` Modifies rules in `eslint:recommended` so as to be compatible with Typescript projects. Set following [ESLint Plugin TypeScript's recommended settings](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#recommended-configs).
+    * `plugin:@typescript-eslint/recommended` Typescript specific lint settings that do **not** require type checking. Set following [ESLint Plugin TypeScript's recommended settings](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#recommended-configs).
+    * `plugin:@typescript-eslint/recommended-requiring-type-checkin` Typescript specific lint settings that require type checking. Set following [ESLint Plugin TypeScript's recommended settings](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#recommended-configs).
+    * `plugin:react/recommended` Recommended ESLint extension for react. [Docs](https://github.com/yannickcr/eslint-plugin-react#configuration).
+    * `plugin:prettier/recommended` Adds Prettier support to ESLint, set following [`eslint-plugin-prettier` docs](https://github.com/prettier/eslint-plugin-prettier#recommended-configuration). We still need to install `prettier` package. Should be [**last**](https://github.com/prettier/eslint-config-prettier/blob/master/README.md#installation) extension. Additional prettier extensions that allow prettier to be compatible with popular community extensions should follow this one.
+    * `prettier/@typescript-eslint` Make prettier compatible with `@typescript-eslint/eslint-plugin`.
+    * `prettier/react` Make prettier compatible with `eslint-plugin-react`.
+  * `globals` No globals necessary b/c the typescript plugin disables `no-unused-vars`, as technically we're using the type system to determine which globals exist.
+  * `parser` Using TS parser `@typescript-eslint/parser`, [docs](https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#getting-started).
+  * `parserOptions` Because we're using type-checking lint rules, we need to specify project location. Note that this project location is relative to the cwd where ESLint runs. The set values ensure that it adequately picks up files in all yarn workspaces regardless of whether ESLint is running from the project root or from within the workspace. When running from the project root, `packages/**/tsconfig.json` and `web/**/tsconfig.json` take care of matching all tsconfigs in all yarn workspaces and `tsconfig.json` will match the project's root `tsconfig.json` (which is redundant as it has an emptiy `files` array and the yarn workspace tsconfigs extend it). When running from a yarn workspace, the `tsconfig.json` will match the workspace's `tsconfig.json` (which again, extends the project's root `tsconfgi.json`) and the other globs will not match anything (which is fine as this is what we want because the matched `tsconfig.json` already contains all the type settings for that workspace).
+  * `plugins` for our dev tools TS, React, Prettier.
+  * `root` set to `true` to tell ESLint to stop searching for config files above the project root.
+  * `settings` only the react version setting required by the react plugin.
+
 * `.gitignore` Typical gitignore
 * `babel.config.js` Simple babel config with settings recommneded for TS as per [docs](https://github.com/microsoft/TypeScript-Babel-Starter#create-your-babelrc). Since we're using one `babel.config.js` for the entire project (explanation [here](#Explanation-babel)) we need different module syntax for our test runner (Jest runs on node and needs CommonJS module syntax) and our bundler (Webpack natively understands ES Module syntax, which is what this project is using). 
     * The file also shows how to target specific files in the project that may need specific transpilation settings using the `overrides` option. In this project, we've added support for transpiling flow files too. Babel docs for [`overrides`](https://babeljs.io/docs/en/options#overrides).
@@ -147,3 +162,15 @@ const config = {
 * All transpiling controlled from repo root `babel.config.js`, tweaks to individual files/repos to be done with [`overrides`](https://babeljs.io/docs/en/options#overrides).
 
 # Dead code elimination / tree-shaking
+
+# Future tasks
+
+* Have ESLint properly target files that are not in a worksapce, proably with overrides
+
+# Philosophy
+
+Keeping it simple. 
+
+The JS ecosystem has limitless config possibilities. In this project, we're keeping the configs as simple as possible by using mostly recommended or default settings.
+
+The there is a high cost of opportunity in fine tuning the configs of our dev tools. As such, this project leverages the defaults and recommneded settings established by the community.

@@ -1,5 +1,5 @@
 {
-  "name": "@aryzing/foo-pkg",
+  "name": "@aryzing/p2",
   "private": true,
   "version": "1.0.0",
   "main": "dist/index.js",

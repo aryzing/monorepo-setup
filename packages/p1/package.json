@@ -1,5 +1,5 @@
 {
-  "name": "@aryzing/bar-pkg",
+  "name": "@aryzing/p1",
   "private": true,
   "version": "1.0.0",
   "main": "dist/index.js",

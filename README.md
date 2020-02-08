@@ -25,7 +25,7 @@
     * Using `core-js` version 3 as that is the [future](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md#core-js3-babel-and-a-look-into-the-future) and provides [excellent integration with Babel](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md#babel).
     * The file also shows how to target specific files in the project that may need specific transpilation settings using the `overrides` option. In this project, we've added support for transpiling flow files too. Babel docs for [`overrides`](https://babeljs.io/docs/en/options#overrides).
     * Intentionally left out React config as it does not provide additional value in this monorepo demo.
-* `jest.config.js` This is the jest config that can be used to run tests for the entire project. It leverages Jest's `projects` feature (which we're using to point to packages) to run all tests for the entire project with a single Jest instance. The regexp used for `projects` imposes a convention whereby packages must contain a `jest.config.js`. This is to help ensure that we run tests only for projects which have been set up properly (they should have their own `jest.config.js` which itself adheres to a set of conventions). Although at this level we can't enforce that each package's config file conforms to the convention, we at least ensure that we're runnig tests for packages that contain the config file. This also prevents Jest from running in project files that would otherwise match if the config file name was omitted (`"<rootDir>/packages/*"`) but had not config set up (in which case Jest's default values would be used, which is not what we want as those won't work in this project.) We're also using the `baseConfig` that all tests should be run with.
+* `jest.config.js` This is the jest config that can be used to run tests for the entire project. It leverages Jest's `projects` feature to run all tests for the entire project with a single Jest instance. The regexp used for `projects` imposes a convention whereby packages must contain a `jest.config.js`. This is to help ensure that we run tests only for projects which have been set up properly (they should have their own `jest.config.js`, which should adhere to the [convention](#Jest-conventions)). Although at this level we can't enforce that matched `jest.config.js` files adhere to the convention, we at least ensure that we're runnig tests for packages that contain a config file. This also prevents Jest from running in projects that would otherwise match if the config file name was omitted (`"<rootDir>/packages/*"`) but had no config set up (in which case Jest's default values would be used, which is not what we want as those won't work in this project.) We're also using the `baseConfig` that all tests should be run with.
 * `package.json`
     * Workspaces for yarn set in `"workspaces"`
     * script `clean` will remove all `node_modules` and `dist` in entire project
@@ -72,16 +72,10 @@
     * `include` include all files in `src` dir. All packages are expected to have their source in a `src` dir.
     * `exclude` Note that there is no exclude field, so declaration files for tests will be emitted too. 
 
-* `.eslintrc.js`
-    * `env`
-    * `extends`
-    * `globals`
-    * `parser`
-    * `parserOptions`
-    * `plugins`
-    * `rules`
-    * `overrides`
+# Jest conventions
 
+* All Jest configs have the project root as the Jest root. This allows configs to be mostly the same, and makes included files and paths easier to reason about. Makes paths easier to reason about when importing base Jest config.
+* All Jest projects have a `displayName` that is extracted from their package name.
 
 # Explanation Babel
 

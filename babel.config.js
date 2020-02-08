@@ -1,15 +1,15 @@
 module.exports = function (api) {
-    let babelEnvOptions
+    let presetEnvEnvOptions
 
     if (api.env("test")) {
-        babelEnvOptions = { targets: { node: 'current' } }
+        presetEnvEnvOptions = { targets: "current node" }
     } else {
-        babelEnvOptions = { modules: false }
+        presetEnvEnvOptions = { modules: false }
     }
 
     return {
         presets: [
-            ["@babel/env", babelEnvOptions],
+            ["@babel/env", {...presetEnvEnvOptions, useBuiltIns: "usage", corejs: 3}],
             "@babel/typescript",
         ],
         plugins: [
@@ -19,7 +19,7 @@ module.exports = function (api) {
         overrides: [{
             test: "**/*.js",
             presets: [
-                ["@babel/env", babelEnvOptions],
+                ["@babel/env", presetEnvEnvOptions],
                 "@babel/preset-flow",
             ],
         }],

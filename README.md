@@ -28,10 +28,14 @@
 * `jest.config.js` This is the jest config that can be used to run tests for the entire project. It leverages Jest's `projects` feature to run all tests for the entire project with a single Jest instance. The regexp used for `projects` imposes a convention whereby packages must contain a `jest.config.js`. This is to help ensure that we run tests only for projects which have been set up properly (they should have their own `jest.config.js`, which should adhere to the [convention](#Jest-conventions)). Although at this level we can't enforce that matched `jest.config.js` files adhere to the convention, we at least ensure that we're runnig tests for packages that contain a config file. This also prevents Jest from running in projects that would otherwise match if the config file name was omitted (`"<rootDir>/packages/*"`) but had no config set up (in which case Jest's default values would be used, which is not what we want as those won't work in this project.) We're also using the `baseConfig` that all tests should be run with.
 * `package.json`
     * Workspaces for yarn set in `"workspaces"`
-    * script `clean` will remove all `node_modules` and `dist` in entire project
+    * script `build-packages` will take care to properly bootstrap the project by building the packages the MFEs rely on in the appropriate order.
+    * script `clean` will remove all `node_modules` and `dist` in entire project.
     * script `test` will run all tests in the repo. It will use the top level `jest.config.js` as it's source of configuration.
     * The `devDependencies` are dev dependencies that should be used by all packages. This ensures all builds are built with the same version of the tooling used.
-    * `dependencies` includes the `peerDependencies` delcared in packages from `packages`. This is to ensure that when a MFE bundle is created, the package is available during the build. Yarn will provide a warning when installing dependencies if peer dependencies are not installed for packages in `packages`, which can then be added here. This also has the added benefit that all MFEs use the same versions of peer dependencies of packages in `packages`.
+    * `dependencies` This project uses a [dependency management strategy](#Dependency-handling) which expects the following dependencies
+        * all project packages in `packages`
+        * all peer dependencies from packages in `packages`
+        * as many dependencies as possible from packages in `web` and `packages` 
     * `browserslist` Used by Babel to generate transpiled code, using [default config location](https://github.com/browserslist/browserslist#queries) and [default config settings](https://github.com/browserslist/browserslist#full-list).
 * `tsconfig.json` Contains the Typescript settings for all packages in this project. The convention this project follows is that all packages should extend the config from this one, as recommended by [guide](https://www.typescriptlang.org/docs/handbook/project-references.html#guidance).
     * `target` set to `esnext` loads latest types for the language. Only using Typescript for type-checking, Babel is used for transpilation (explanation [here](#Explanation-Babel-for-transpiling-Typescript)).
@@ -71,6 +75,22 @@
     * `outDir` to have types in their own directory.
     * `include` include all files in `src` dir. All packages are expected to have their source in a `src` dir.
     * `exclude` Note that there is no exclude field, so declaration files for tests will be emitted too. 
+
+# Dependency handling
+
+The top level `package.json`'s dependencies should include all `peerDependencies` delcared in packages from `packages`. This is to ensure that when a MFE bundle is created, the package is available during the build. During package installation, Yarn issues a warning for peer dependencies from `packages` that are not declared as dependencies. When this happens, we should install add them to ensure MFEs build correctly. This also has the added benefit that all MFEs use the same versions of peer dependencies of packages in `packages`. 
+
+Although packages in `web` and `packages` may have their own dependencies with whichever version is suitable, it is highly recommended to have all dependencies declared at the top level. Thes helps all code use the same versions for dependencies. 
+
+The project's own `packages` should also be dependencies because they're expected to be always in scope for MFE builds and MFE builds should use the most recent workspace code (as if the packages were evergreen). Packages in `packages` have version numbers only to comply with expected `package.json` standards, but are otherwise unused.
+
+The benefits of this dependency handling strategy are 
+ 
+* having a single source of truth for which versions are being used in the project
+* avoiding problems related to using different versions of the same libraries
+* facilitating upgrades to newer versions of a dependency, as any necessary code transformations will be the same
+* facilitating optimizations when similar libraries are used. These may be technical (eg, choosing b/w lodash and ramda, resulting in smaller bundles), educational (opportunity to have an code-review session w/ devs to ensure we're all on same page), conflict-resolution, or objective/vision clarification, among others.
+
 
 # Jest conventions
 

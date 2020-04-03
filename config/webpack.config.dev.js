@@ -4,6 +4,7 @@ const packageName = require(path.resolve(process.cwd(), 'package.json')).name.sp
 
 module.exports = {
   mode: "development",
+  devtool: 'eval-source-map',
   entry: path.resolve(process.cwd(), 'src/index.ts'),
   output: {
     filename: `${packageName}.js`,
